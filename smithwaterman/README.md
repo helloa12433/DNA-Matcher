@@ -42,7 +42,6 @@ Great as an **alignment/visualization step** after a fast filter (seed/FFT/index
 
 DP matrix `H[i][j]`:
 
-```text
 H[i][j] = max(
   0,
   H[i-1][j-1] + (match ? +score : -penalty),
@@ -90,6 +89,8 @@ Showing local alignment around interesting hits
 Visualizing mutations + gaps
 
 Teaching scoring-based alignment
+
+live url :- https://dnasmithwatermanmatcher.bytexl.live/
 
 📄 License
 
