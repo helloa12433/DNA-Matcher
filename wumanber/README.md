@@ -1,7 +1,6 @@
 
 ---
 
-```md
 # 🧬 DNA Wu–Manber Matcher — Block-Hash Skip + k-Mismatches
 
 Approximate DNA matcher inspired by the **Wu–Manber** algorithm.
@@ -79,6 +78,8 @@ Text length	Pattern	Block	Time (approx)
 10M	40 bp	3	~1.2–1.8 s
 
 Good when blocks are reasonably selective (not ultra repetitive).
+
+live url :- https://dnawumanbermatcher.bytexl.live/
 
 👨‍🔬 Ideal For
 
