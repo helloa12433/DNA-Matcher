@@ -1,16 +1,103 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+```md
+# 🧬 DNA Seed-and-Extend Matcher — BLAST-Style Hits
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Approximate DNA matcher using a **seed-and-extend** strategy similar to BLAST:
 
-## React Compiler
+1. Find exact matches of short **seeds**.
+2. Extend around each seed while counting mismatches.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+UI metrics:
 
-## Expanding the ESLint configuration
+- Gene Present
+- Mutation Present
+- Virus Marker
+- Variant Similarity
+- Approx. Similarity (%)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🔥 Overview
+
+Instead of comparing at every position, this matcher:
+
+- builds a seed index over the text (k-mer → positions)
+- picks spaced seeds from the pattern
+- verifies only windows that share seeds with the pattern
+
+This gives big speedups on large texts, especially when seeds are selective.
+
+- Error model: k mismatches (Hamming)
+- Pattern length: 10–200 bp (typical)
+
+---
+
+## 🌟 Features
+
+- Seed length slider (e.g. 3–8)
+- Spaced seeding (step ≈ seedLen/2)
+- Text-side seed index (Map: seed → positions)
+- Full-window Hamming verify after a seed hit
+- Reports:
+  - window start/end
+  - mismatch positions
+  - similarity score + 5 cards
+- Heatmap based on match density/score
+
+---
+
+## 🧠 How It Works (short)
+
+1. **Index text**
+
+   For each `i`:
+
+   ```text
+   seed = text[i .. i+seedLen)
+   index[seed].push(i)
+
+Generate seeds from pattern
+
+for s = 0; s <= m - seedLen; s += stride:
+
+seed = pattern[s .. s+seedLen)
+
+For each hit position p of that seed
+
+candidate window start = p - s
+
+verify pattern vs text[start .. start+m):
+
+count mismatches, record mismatch indices
+
+accept if mismatches ≤ k
+
+Aggregate accepted windows → UI.
+
+⚡ Rough Performance
+
+SeedLen 3–6, normal DNA (not too repetitive):
+
+Text length	Pattern	Time (approx)
+50k	~30 bp	~5–8 ms
+500k	~30 bp	~40–70 ms
+2M	~30 bp	~180–300 ms
+10M	~30 bp	~1.0–1.5 s
+
+Handles many MB–hundreds of MB on single machine.
+
+TB-scale realistic as many sequences + index, not one big string.
+
+👨‍🔬 Ideal For
+
+BLAST-style “hit first, align later” pipelines
+
+Quickly narrowing down regions for Smith–Waterman
+
+Matching reads with small error tolerance
+
+📄 License
+
+MIT — part of DNA Approximate Matcher suite.
