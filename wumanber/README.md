@@ -1,16 +1,93 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+```md
+# 🧬 DNA Wu–Manber Matcher — Block-Hash Skip + k-Mismatches
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Approximate DNA matcher inspired by the **Wu–Manber** algorithm.
 
-## React Compiler
+Uses a **block-size hash** at the pattern tail to skip over the text,  
+then verifies candidate windows with up to `k` mismatches.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+UI metrics:
 
-## Expanding the ESLint configuration
+- Gene Present
+- Mutation Present
+- Virus Marker
+- Variant Similarity
+- Approx. Similarity (%)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🔥 Overview
+
+Wu–Manber-style matching:
+
+- Precomputes a shift table for pattern tail blocks.
+- While scanning text:
+  - if the current tail block is unlikely → jump ahead.
+  - if tail block matches → verify full window.
+
+This reduces the number of full comparisons on large texts.
+
+- Error model: k mismatches (no gaps)
+- Works well for **medium patterns** (20–200 bp).
+
+---
+
+## 🌟 Features
+
+- Block size slider (B = 2–6 bases)
+- Shift-table pre-processing:
+  - maps block → minimum safe shift
+- Fast skipping on non-matching regions
+- Full Hamming verify on candidate windows
+- Reports mismatch indices, similarity, 5 cards + heatmap
+
+---
+
+## 🧠 How It Works (short)
+
+1. **Preprocess pattern**
+
+   For each position `i`:
+
+   ```text
+   block = pattern[i .. i+B)
+   shift[block] = min(shift[block], m - B - i)
+
+Default shift = m - B + 1.
+
+Scan text
+
+Align pattern at pos.
+
+Compare tail block text[pos + m - B .. pos + m).
+
+Look up shift s:
+
+if s > 0 → pos += s.
+
+if s == 0 → verify full window
+(count mismatches, record indices; keep if ≤ k), then pos += 1.
+
+⚡ Rough Performance
+Text length	Pattern	Block	Time (approx)
+50k	40 bp	3	~6–10 ms
+500k	40 bp	3	~50–90 ms
+2M	40 bp	3	~200–350 ms
+10M	40 bp	3	~1.2–1.8 s
+
+Good when blocks are reasonably selective (not ultra repetitive).
+
+👨‍🔬 Ideal For
+
+Fast approximate search with very cheap preprocessing
+
+Comparing skip-based vs full-scan algorithms
+
+As a filter before heavier alignment
+
+📄 License
+
+MIT — part of DNA Approximate Matcher suite.
