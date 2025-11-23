@@ -70,6 +70,8 @@ Large sizes: significantly faster and more stable.
 
 TB-scale: still requires chunking / distributed pipeline.
 
+live url :- https://dnafftwasmmatcher.bytexl.live/
+
 👨‍🔬 Ideal For
 Production-grade FFT-based DNA matcher in browser
 
