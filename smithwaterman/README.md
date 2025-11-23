@@ -1,16 +1,51 @@
-# React + Vite
+# 🧬 DNA Smith–Waterman Matcher — Local Alignment with Gaps
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Local alignment engine based on **Smith–Waterman DP**.  
+Finds high-scoring local alignments between pattern and a long DNA text.
 
-Currently, two official plugins are available:
+UI metrics:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Gene Present
+- Mutation Present
+- Virus Marker
+- Variant Similarity
+- Approx. Similarity (%)
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🔥 Overview
 
-## Expanding the ESLint configuration
+Smith–Waterman computes the **best local alignment** allowing:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- matches (reward)
+- mismatches (penalty)
+- gaps: insertions & deletions (gap penalty)
+
+Great as an **alignment/visualization step** after a fast filter (seed/FFT/index).
+
+---
+
+## 🌟 Features
+
+- True local alignment (subsequence vs subsequence)
+- Configurable match/mismatch/gap scoring
+- Backtracking to recover alignment window
+- Reports:
+  - window start/end on text
+  - edit distance / score
+  - mismatch positions
+- 5 summary cards from top-N alignments
+
+---
+
+## 🧠 How It Works (short)
+
+DP matrix `H[i][j]`:
+
+```text
+H[i][j] = max(
+  0,
+  H[i-1][j-1] + (match ? +score : -penalty),
+  H[i-1][j]   + gap,
+  H[i][j-1]   + gap
+)
