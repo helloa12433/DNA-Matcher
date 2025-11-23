@@ -49,3 +49,48 @@ H[i][j] = max(
   H[i-1][j]   + gap,
   H[i][j-1]   + gap
 )
+
+Fill H for all i, j.
+
+Track global max cells.
+
+From each max, backtrack until score hits 0:
+
+determine alignment window in text
+
+count mismatches/gaps → similarity.
+
+Normalize scores → heatmap + 5 cards.
+
+Time: O(n * m)
+Space: O(n * m) (demo uses compact 1D array + band via “max alignment length”).
+
+⚡ Rough Performance
+
+Pattern ~50–150 bp:
+
+Text length	Time (approx)
+50k	~30–50 ms
+500k	~300–400 ms
+2M	~1.5–2.5 s
+10M	~8–12 s
+
+Best usage:
+
+Text up to few MB per run in browser
+
+Or small candidate windows after seeding / indexing
+
+TB-scale only as verification, not full-scan.
+
+👨‍🔬 Ideal For
+
+Showing local alignment around interesting hits
+
+Visualizing mutations + gaps
+
+Teaching scoring-based alignment
+
+📄 License
+
+MIT — part of DNA Approximate Matcher suite.
