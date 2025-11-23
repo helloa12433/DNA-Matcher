@@ -1,262 +1,197 @@
-🧬 DNA Approximate Matching Suite
-Hybrid FFT + Bit-Vector + Seed-Based + Index-Based DNA Matchers
+# 🧬 DNA Approximate Matching Suite  
+### Hybrid FFT + Bit-Vector + Seed-Based + Index-Based DNA Matchers  
+🚀 Ultra-optimized search engines for mismatches, edits, and local alignment  
 
-🚀 Ultra-optimized search engines for mismatches, edits, and local alignment
+> **Author:** Pankaj Kumar  
+> Competitive Programmer • MERN + Web3 • FFT Specialist  
 
-Author: Pankaj Kumar
-Competitive Programmer • MERN + Web3 • FFT Specialist
+---
 
-🌈 Overview
+# 🌈 Overview  
 
-This project is a collection of the 8 most powerful DNA pattern-matching algorithms, optimized for:
+This project is a **collection of 8 powerful DNA pattern-matching algorithms**, each optimized for:  
 
-Large DNA sequences (MB → GB scale)
+- Large DNA sequences (MB → GB scale)  
+- Allowed mismatches / edits  
+- Local alignment  
+- Convolution-based matching  
+- Index-based search at huge scale  
 
-Allowed mismatches / edits
+Every algorithm reports:  
+✔ Gene Present  
+✔ Mutation Present  
+✔ Virus Marker Probability  
+✔ Variant Similarity  
+✔ Approx. Similarity (%)  
+✔ Neon Heatmap of match strength  
 
-Local alignment
+---
 
-High-speed k-mismatch FFT
+# 🔥 Core Comparison Table
 
-Index-based rapid searching
+| Algorithm | Errors | Speed | Pattern Size | Text Size | TB Realistic? | Best Use |
+|----------|--------|--------|---------------|-------------|----------------|-----------|
+| **DP Edit Distance** | full edits | ❌ slow | ≤1k | MB–100MB | ❌ | full accuracy |
+| **Myers Bit-vector** | k edits/mism | ⚡⚡ fast | ≤128bp | MB–GB | ⚠️ chunked | short pattern fuzzy |
+| **FFT JS (Hamming)** | mismatches | ⚡ fast | 10–200bp | 10⁵–10⁶ | ❌ | medium in-browser |
+| **FFT WASM** | mismatches | ⚡⚡ faster | 10–200bp | 1M–10M | ⚠️ | high-performance |
+| **q-gram / LSH** | edits/mism | ⚡ | any | GB–TB | ✅ | massive DB search |
+| **Seed-and-Extend** | mismatches | ⚡ | 10–200 | MB–GB | ⚠️ | BLAST-like |
+| **Wu–Manber** | mismatches | ⚡ | 20–200 | MB–GB | ⚠️ | skip-based |
+| **FM-index / SA** | k edits | ⚡⚡ | short | GB–tens GB | ⚠️ | genome aligners |
 
-Every algorithm is implemented with:
-🔬 concrete performance
-🧠 data-size capacity
-📊 best use-case
-🎯 TB-level feasibility
+---
 
-🔥 Big Comparison Table (The Heart of the Project)
-⭐ Algorithm Capabilities & Scaling
-Family / Algorithm	Errors Allowed	Speed	Pattern Size	Text Size	TB-Level Feasible?	Notes
-DP Edit Distance (Levenshtein)	full edits (ins/del/sub)	❌ slow	≤ 1k	MB–100MB	❌ No	Gold-standard accuracy
-Myers Bit-vector	k edits	⚡ very fast	≤ 64–128 chars	MB–few GB	⚠️ Yes (streaming)	Best for short patterns
-FFT k-mismatches (JS)	mismatches only	⚡ fast	10–200	MB–1GB	❌ No	Near O(n log n)
-FFT k-mismatches (WASM)	mismatches only	⚡⚡ faster	10–200	1M–10M	⚠️ Limited	Hybrid for huge
-q-gram / LSH + Verify	edits/mismatches	⚡ fast for collections	any	Many GB–TB	✅ Yes	Distributed-friendly
-Seed-and-Extend	mismatches	⚡ fast	10–200	MB–GB	⚠️ Partial	Used in BLAST
-Wu–Manber Style	k mismatches	⚡ fast	20–200	MB–GB	⚠️ Sometimes	Skip-based
-FM-index / SA + Backtrack	k mismatches or k edits	⚡⚡ powerful	short	GB–tens of GB	⚠️ hard TB	Used in Bowtie/BWA
-🎨 UI Summary Cards (Common to all)
+# 📚 Individual Algorithm Documentation  
 
-All algorithms fill 5 key stats:
+## 1️⃣ DP Edit Distance (Levenshtein)
 
-Gene Present
+- Full edits: insertions, deletions, substitutions  
+- Perfect accuracy but slow  
 
-Mutation Present
+### ⏱ Speed  
+- 50k text → ~10–20 ms  
+- 500k → ~150 ms  
+- 2M → ~1–2 s  
 
-Virus Marker Probability
+### 📦 Data Size  
+- MB–100MB  
+- ❌ Not GB/TB suitable  
 
-Variant Similarity
+---
 
-Approx. Similarity (%)
+## 2️⃣ Myers Bit-vector
 
-Heatmap: brighter → stronger match
-Mismatch index cards shown for every hit.
+- Fastest for patterns ≤ 128 bp  
+- DP simulated with bitwise operations  
 
-📚 INDIVIDUAL README SECTIONS
+### ⏱ Speed  
+- 50k → ~5 ms  
+- 1M → ~40 ms  
+- 10M → ~0.5–1.2 s  
 
-Below har algorithm ka independent README diya gaya.
+### 📦 Data Size  
+- MB → a few GB  
+- TB possible via streaming  
 
-1️⃣ DP Edit Distance (Levenshtein)
-Full edit distance (insertions, deletions, substitutions)
-🔧 Model
+---
 
-Classic dynamic programming on a matrix.
+## 3️⃣ FFT k-Mismatches (JS)
 
-⚡ Speed
-Text	Pattern	Time
-50k	30 bp	~10–20 ms
-500k	30 bp	~100–200 ms
-2M	30 bp	~1–2 sec
-📦 Data Size
+- Pure JavaScript FFT  
+- 4-channel DNA convolution (A/C/G/T)  
 
-Best: MB–100MB
+### ⏱ Speed  
+- 50k → 10–15 ms  
+- 500k → ~90 ms  
+- 2M → ~0.5 s  
 
-Not suited for GB/TB.
+### 📦 Data Size  
+- Best for 10⁵–10⁶  
 
-🎯 Use
+---
 
-Exact accuracy needed
+## 4️⃣ FFT k-Mismatches (WASM)
 
-Verification stage for other algorithms
+- Native-like convolution  
+- Rust/C++ → WebAssembly  
 
-2️⃣ Myers Bit-vector (Bitset DP)
-🔥 Fastest for small patterns (≤128 bp)
-🔧 Model
+### ⏱ Speed  
+- 500k → 50–80 ms  
+- 2M → 150–250 ms  
+- 10M → 600–800 ms  
 
-Bitmasks + bit-operations simulate DP rows.
+### 📦 Data Size  
+- 1M–10M  
+- Chunking needed beyond this  
 
-⚡ Speed
-Text	Pattern	Time
-50k	40 bp	~5 ms
-1M	40 bp	~40 ms
-10M	40 bp	~0.4–0.8 s
-📦 Data Size
+---
 
-MB → few GB
+## 5️⃣ q-gram / LSH + Verify
 
-TB possible via chunk-streaming.
+- TB-scale realistic  
+- Divide into q-grams → LSH buckets → verify candidates  
 
-🎯 Use
+### ⏱ Speed  
+- Extremely fast on large datasets  
+- Designed for GB–TB databases  
 
-Short pattern fuzzy search
+### 📦 Data Size  
+- Many GB → Many TB  
 
-Real-time streaming DNA analysis
+---
 
-3️⃣ FFT k-Mismatches (Pure JS)
-Fast Hamming mismatch finder via convolution
-🔧 Method
+## 6️⃣ Seed-and-Extend (BLAST-like)
 
-Binary encode A/C/G/T → 4 FFT convolutions → sum → mismatches.
+- Exact seeds → extend & check mismatches  
+- Used widely in genomics  
 
-⚡ Speed
-Text	Pattern	Time
-50k	30 bp	~10–15 ms
-500k	30 bp	~80–100 ms
-2M	30 bp	~0.4–0.6s
-📦 Data Size
+### ⏱ Speed  
+- 50k → ~5–8 ms  
+- 500k → ~60 ms  
+- 2M → 200–300 ms  
 
-Best: 10⁵ – 10⁶ bases
+### 📦 Data Size  
+- MB → few GB  
+- TB possible with distributed indexing  
 
-JS memory limits hit quickly.
+---
 
-🎯 Use
+## 7️⃣ Wu–Manber Style
 
-Browser-only FFT demo
+- Skip-based matching  
+- Uses block hashes and shift table  
 
-Medium sequences
+### ⏱ Speed  
+- 50k → 6–10 ms  
+- 500k → 50–90 ms  
+- 2M → 200–350 ms  
 
-4️⃣ FFT k-Mismatches (WASM)
-🚀 Native-like FFT for large sequences
-⚡ Speed
-Text	Pattern	Time
-500k	30 bp	~50–80 ms
-2M	30 bp	~150–250 ms
-10M	30 bp	~700–800 ms
-📦 Data Size
+### 📦 Data Size  
+- Best: MB–GB  
 
-Safe: 1M–10M bases
+---
 
-Chunking needed beyond this.
+## 8️⃣ FM-Index / Suffix Array
 
-🎯 Use
+- Compressed full-text index  
+- Supports backtracking for k edits  
 
-High-performance FFT pipeline
+### 📦 Data Size  
+- GB–tens of GB reference  
+- TB hard (requires distributed FM-index)  
 
-Browser-based genomic tools
+---
 
-5️⃣ q-gram / LSH + Verify
-TB-scale realistic — large DNA databases
-🔧 Method
+# 🧠 Final Mega-Table
 
-Break into q-grams
+| Algorithm | Full Edits | Mismatches | Speed | Best Pattern | Best Text | TB? | Notes |
+|----------|------------|------------|--------|---------------|------------|-------|-------|
+| Levenshtein | ✅ | ✅ | ❌ | ≤1k | MB–100MB | ❌ | Exact DP |
+| Myers | ✅ | ✅ | ⚡⚡ | ≤128 | MB–GB | ⚠️ | Best for short |
+| FFT JS | ❌ | ✅ | ⚡ | 10–200 | 10⁵–10⁶ | ❌ | Browser FFT |
+| FFT WASM | ❌ | ✅ | ⚡⚡ | 10–200 | 1M–10M | ⚠️ | Native-like |
+| q-gram / LSH | ⚠️ | ⚠️ | ⚡ | any | GB–TB | ✅ | Large DBs |
+| Seed+Extend | ❌ | ✅ | ⚡ | 10–200 | MB–GB | ⚠️ | BLAST-like |
+| Wu–Manber | ❌ | ✅ | ⚡ | 20–200 | MB–GB | ⚠️ | Skip-based |
+| FM-index | ⚠️ | ⚠️ | ⚡⚡ | short | GB–tens GB | ⚠️ | Genome aligners |
 
-Hash buckets
+---
 
-LSH for approximate similarity
+# 🎉 Conclusion
 
-Verify short candidate windows
+This repository demonstrates **every major approximate string-matching family**,  
+from basic DP → bit-vector → FFT → seeds → index structures.
 
-⚡ Speed
+It can be used for:
 
-Varies, but extremely fast for huge databases.
+- Genomic research  
+- Mutation scanning  
+- Fast approximate search  
+- Educational visualizations  
+- Benchmarking diverse algorithms  
 
-📦 Data Size
+---
 
-GB–TB realistically
-
-Used in similarity search engines.
-
-🎯 Use
-
-DNA document databases
-
-Massive-scale genome collections
-
-6️⃣ Seed-and-Extend (BLAST-like)
-Search seeds → verify windows
-⚡ Speed
-Sequence	Pattern	Time
-50k	30 bp	~5–8 ms
-500k	30 bp	~50–70 ms
-2M	30 bp	~200–300 ms
-📦 Data Size
-
-MB→GB
-
-TB possible in distributed mode.
-
-🎯 Use
-
-Mutation-tolerant
-
-Great before Smith–Waterman
-
-7️⃣ Wu–Manber Style
-Skip-based matching with block shifts
-⚡ Speed
-Text	Pattern	Time
-50k	40 bp	~6–10 ms
-500k	40 bp	~60–90 ms
-2M	40 bp	~200–300 ms
-📦 Data Size
-
-Best: MB→GB
-
-TB rare (needs non-repetitive text).
-
-🎯 Use
-
-Approximate matching with skipping
-
-Good when DNA has low repetition
-
-8️⃣ FM-Index / Suffix Array + Backtracking
-Ultra-compressed index-based DNA search
-⚡ Speed
-
-Query: microseconds
-
-But build time is huge.
-
-📦 Data Size
-
-Reference: GB–tens of GB
-
-TB possible with distributed FM-index.
-
-🎯 Use
-
-Genome aligners (Bowtie/BWA)
-
-Large reference DNA
-
-🏆 SUMMARY: Which Algorithm Should You Use?
-If you want the fastest overall:
-
-→ Myers bit-vector (short patterns)
-→ FFT WASM (large mismatches)
-
-If you want real BLAST-style matching:
-
-→ Seed-and-extend + Smith–Waterman
-
-If you want TB-scale search:
-
-→ q-gram/LSH OR distributed FM-index
-
-Best full-edit accuracy:
-
-→ DP Edit Distance or Smith–Waterman
-
-🧠 Final Mega-Table (Everything Combined)
-Algorithm	Full Edits	Mismatches	Speed	Best Pattern Size	Best Text Size	TB-Level	Notes
-DP Edit Distance	✅	✅	❌ slow	≤1k	MB–100MB	❌	full accuracy
-Myers Bit-vector	✅	✅	⚡⚡	≤128	MB–GB	⚠️	best for short patterns
-FFT JS	❌	✅	⚡	10–200	10⁵–10⁶	❌	browser FFT
-FFT WASM	❌	✅	⚡⚡	10–200	1M–10M	⚠️	heavy FFT
-q-gram / LSH	⚠️	⚠️	⚡	any	GB–TB	✅	massive datasets
-Seed-and-Extend	❌	✅	⚡	10–200	MB–GB	⚠️	BLAST-like
-Wu–Manber	❌	✅	⚡	20–200	MB–GB	⚠️	skip-based
-FM-index	⚠️	⚠️	⚡⚡	small	GB–tens GB	⚠️	genome aligners
+# 💛 Credits  
+Built with passion by **Pankaj Kumar**.  
