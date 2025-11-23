@@ -2,9 +2,6 @@
 ### Hybrid FFT + Bit-Vector + Seed-Based + Index-Based DNA Matchers  
 🚀 Ultra-optimized search engines for mismatches, edits, and local alignment  
 
-> **Author:** Pankaj Kumar  
-> Competitive Programmer • MERN + Web3 • FFT Specialist  
-
 ---
 
 # 🌈 Overview  
@@ -192,6 +189,69 @@ It can be used for:
 - Benchmarking diverse algorithms  
 
 ---
+## 🏆 SUMMARY: Which Algorithm Should You Use?
+
+### ⚡ Fastest overall (situation-based)
+
+**→ FM-index / Suffix-Array (large genomes, repeated queries)**  
+Super-fast queries (microseconds–ms) once index is built.  
+Ideal for huge reference genomes (GB–tens of GB).
+
+**→ Myers Bit-vector (short patterns, streaming text)**  
+Fastest approximate DP for ≤128bp patterns.  
+Perfect for MB–GB scans.
+
+**→ FFT WASM k-mismatches (large mismatch scanning)**  
+Fastest for long windows (hundreds of thousands–millions of bases).  
+Mismatch-only model but extremely high throughput.
+
+---
+
+### 🔬 If you want real BLAST-style matching:
+
+**→ Seed-and-Extend + Smith–Waterman**  
+Seeds for fast filtering, SW for accurate local alignment.  
+Classic pipeline used in BLAST, Bowtie-2, minimap2.
+
+---
+
+## 🏆 Fastest Algorithms (Situation-Based)
+
+### ⚡ Fastest for full genome-scale search (post-index build)
+→ **FM-index / Suffix Array**
+- microsecond–millisecond search  
+- handles billions of bases  
+- backbone of BWA / Bowtie  
+- ideal for repeated queries  
+
+### ⚡ Fastest for short-pattern approximate DP
+→ **Myers Bit-vector**
+- O(n / wordsize) streaming  
+- pattern ≤ 128bp  
+- best for MB–GB linear scans  
+
+### ⚡ Fastest for large-window mismatch search
+→ **FFT WASM k-mismatches**
+- O(n log n) convolution  
+- best for 200k–10M text size  
+- perfect for mismatch-only genomic scanning
+
+
+### 🏢 If you want TB-scale search:
+
+**→ q-gram / LSH (distributed collection search)**  
+Great for many GB–TB of sequences (as documents/reads).
+
+**→ Distributed FM-index (cluster-scale reference)**  
+Research-level but extremely powerful for massive references.
+
+---
+
+### 🎯 Best full-edit accuracy (ins/del/sub):
+
+**→ DP Edit Distance (Levenshtein) or Smith–Waterman**  
+Use for final verification or small local windows.
+
 
 # 💛 Credits  
 Built with passion by **Pankaj Kumar**.  
