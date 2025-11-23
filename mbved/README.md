@@ -67,6 +67,8 @@ Space: `O(ceil(m / wordSize))`.
 
 ---
 
+live url :- https://dnamyersmatcherbit-vectork-errors.bytexl.live/
+
 ## 👨‍🔬 Ideal For
 
 - Fast fuzzy search of small motifs
