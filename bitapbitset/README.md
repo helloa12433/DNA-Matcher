@@ -1,16 +1,88 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 2️⃣ README — Bitap / Bitset DP Matcher
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# 🧬 DNA Bitap Matcher — Bitset DP for k Errors
 
-## React Compiler
+Approximate DNA matcher using **Bitap / bitset dynamic programming**.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+This method trades full DP matrix for **bit masks**, allowing very fast matching
+for **short patterns** over **long texts** with up to `k` errors
+(mismatches or full edits depending on variant).
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🔥 Overview
+
+Bitap builds bitmasks that encode where each character appears in the pattern.
+Each text character updates one or more bit-vectors that represent whether
+prefixes of the pattern match with up to `k` errors.
+
+For DNA we keep bitmasks for `A/C/G/T` and maintain k+1 bitsets in parallel.
+
+- Error model: `k` errors (can be mismatch-only or full edit variant)
+- Very efficient when pattern length ≤ machine word size * a few
+
+---
+
+## 🌟 Features
+
+- 📦 Pattern packed into bitsets
+- ⚡ Very fast per-character update using bitwise ops
+- 🔢 Supports small `k` (0–4 typically)
+- 🎯 Reports windows with ≤ `k` errors
+- 🎨 Heatmap from normalized match score
+
+---
+
+## 🧠 How Bitap Works (mismatch-only flavour)
+
+For pattern `P` length `m` (assume `m ≤ 64` for simple version):
+
+1. Build equality masks:
+
+   ```txt
+   Peq[c] = bit i is 1 if P[i] == c
+Maintain a bit-vector R where bit i means
+"prefix of length i+1 matches suffix of text with ≤ k errors".
+
+For each text char c:
+
+update R with a bit-parallel recurrence involving shifts, AND, OR.
+
+if bit corresponding to full length falls within error threshold, emit match.
+
+Full k-error edit-distance variant maintains k+1 bitsets: R0, R1, ..., Rk.
+
+Time per character: O(k) bit operations (usually < 5)
+Space: O(k * ceil(m / wordSize)).
+
+⚡ Practical Size & Performance
+Best when:
+
+pattern length ≤ few hundred chars (bitsets across few words)
+
+text length: MB–few GB (streaming/chunked)
+
+Example (single-word DNA variant, m ≤ 64):
+
+Text length	Pattern length	k errors	Time (approx)
+50k	40 bp	≤ 2	~4–8 ms
+500k	40 bp	≤ 2	~40–70 ms
+2M	40 bp	≤ 2	~160–280 ms
+10M	40 bp	≤ 2	~1–1.8 s
+
+TB-level: ⚠️ Only via streaming over sharded data; each core must still read all characters.
+
+👨‍🔬 Ideal For
+“Fuzzy grep” style search with short motifs
+
+Real-time log / stream matching with small pattern
+
+Teaching bit-parallel algorithms on DNA
+
+📄 License
+MIT License
+
+👨‍💻 Author
+Pankaj Kumar
