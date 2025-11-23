@@ -74,6 +74,8 @@ Text length	Pattern length	k errors	Time (approx)
 
 TB-level: ⚠️ Only via streaming over sharded data; each core must still read all characters.
 
+live url :- https://bitapbitsetdpdnamatcher.bytexl.live/
+
 👨‍🔬 Ideal For
 “Fuzzy grep” style search with short motifs
 
