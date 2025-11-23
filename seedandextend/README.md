@@ -1,7 +1,7 @@
 
 ---
 
-```md
+
 # 🧬 DNA Seed-and-Extend Matcher — BLAST-Style Hits
 
 Approximate DNA matcher using a **seed-and-extend** strategy similar to BLAST:
@@ -89,6 +89,8 @@ Text length	Pattern	Time (approx)
 Handles many MB–hundreds of MB on single machine.
 
 TB-scale realistic as many sequences + index, not one big string.
+
+live url :- https://dnaseed-and-extendmatcher.bytexl.live/
 
 👨‍🔬 Ideal For
 
