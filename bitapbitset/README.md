@@ -1,5 +1,5 @@
 
-## 2️⃣ README — Bitap / Bitset DP Matcher
+##  Bitap / Bitset DP Matcher
 
 
 # 🧬 DNA Bitap Matcher — Bitset DP for k Errors
