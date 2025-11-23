@@ -69,6 +69,8 @@ text up to ~1e5–1e6 chars in browser
 
 you want FFT demo without WASM toolchain.
 
+live url :- https://dnafftmatcher.bytexl.live/
+
 👨‍🔬 Ideal For
 Teaching convolution-based string matching
 
