@@ -53,7 +53,7 @@ For pattern `P` length `m`, text `T` length `n`:
 - `prev[j]` = edit distance between `P[0..j-1]` and current text prefix.
 - For each text character `T[i]`, update:
 
-```txt
+
 curr[0] = i + 1
 for j = 1..m:
   cost = (P[j-1] == T[i]) ? 0 : 1
@@ -88,6 +88,8 @@ text up to few MB–~100 MB (native/backend), smaller in browser
 as local verify after seeding / indexing
 
 TB-level: ❌ only as tiny verification windows, not full scan.
+
+live url :- https://dnaeditdistancematcherfulllevenshteindp.bytexl.live/
 
 👨‍🔬 Ideal For
 When you need exact edit distance, not approximate
