@@ -19,7 +19,7 @@ UI metrics:
 
 For each base A/C/G/T we build indicator arrays and convolve them using JS FFT:
 
-```text
+
 matches[i] = matches_A[i] + matches_C[i] + matches_G[i] + matches_T[i]
 mismatches[i] = patternLen - matches[i]
 This gives the mismatch count at every alignment in nearly O(n log n).
