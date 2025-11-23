@@ -1,4 +1,4 @@
-3️⃣ README — q-gram / LSH + Verify Matcher
+q-gram / LSH + Verify Matcher
 
 ```md
 # 🧬 DNA q-gram / LSH Matcher — Index + Verify
