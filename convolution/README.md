@@ -1,16 +1,80 @@
-# React + Vite
+# 🧬 DNA FFT Matcher — Pure JavaScript Convolution
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Fast DNA k-mismatch matcher using **complex FFT convolution in JavaScript**  
+(no WebAssembly).  
+Specialized for **Hamming distance** (mismatches-only).
 
-Currently, two official plugins are available:
+UI metrics:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Gene Present
+- Mutation Present
+- Virus Marker
+- Variant Similarity
+- Approx. Similarity (%)
+- Pink–blue heatmap of match strength.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🔥 Overview
 
-## Expanding the ESLint configuration
+For each base A/C/G/T we build indicator arrays and convolve them using JS FFT:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```text
+matches[i] = matches_A[i] + matches_C[i] + matches_G[i] + matches_T[i]
+mismatches[i] = patternLen - matches[i]
+This gives the mismatch count at every alignment in nearly O(n log n).
+
+Best for medium–large sequences where DP is too slow
+
+No WASM build step, instant dev experience
+
+🌟 Features
+Pure JavaScript Cooley–Tukey FFT
+
+4-channel DNA encoding (A/C/G/T)
+
+k-mismatch filtering after convolution
+
+Heatmap from normalized match score
+
+5 dashboard cards computed from best hits
+
+🧠 How It Works (short)
+Encode DNA into 4 binary arrays (text + reversed pattern).
+
+For each base b:
+
+Tb = FFT(text_b)
+
+Pb = FFT(pattern_b_rev)
+
+conv_b = IFFT(Tb * conj(Pb))
+
+Sum matches across bases; derive mismatches.
+
+Keep positions with mismatches ≤ k.
+
+Time per run: O(L log L) where L ≈ textLen + patternLen.
+
+⚡ Rough Performance (JS FFT)
+Text length	Pattern	Time (approx)
+50k	20–100	~10–15 ms
+500k	20–100	~80–120 ms
+2M	20–100	~0.4–0.6 s
+10M	20–100	❌ often too slow / memory-heavy
+
+Best when:
+
+text up to ~1e5–1e6 chars in browser
+
+you want FFT demo without WASM toolchain.
+
+👨‍🔬 Ideal For
+Teaching convolution-based string matching
+
+Moderate-size genomic experiments
+
+Quick prototype before WASM/Native optimization
+
+📄 License
+MIT — part of DNA Approximate Matcher suite.
