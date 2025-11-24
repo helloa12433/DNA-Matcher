@@ -1,6 +1,52 @@
 # 🧬 DNA Approximate Matching Suite  
 ### Hybrid FFT + Bit-Vector + Seed-Based + Index-Based DNA Matchers  
 🚀 Ultra-optimized search engines for mismatches, edits, and local alignment  
+This repository is a **full-scale bioinformatics search engine**, built from the
+ground up using **every major string-matching paradigm used in real genomic tools**.
+
+Why?  
+Because no single algorithm works best for all DNA data.
+
+Genome datasets range from:
+• 100bp short reads  
+• 30,000bp viral genomes  
+• 3Bbp human genome  
+• terabytes of metagenomic data  
+
+A single method cannot handle all of them —  
+that’s why professional tools like BLAST, Bowtie, BWA, minimap2 use **multiple models internally**.
+
+This repo rebuilds that entire ecosystem, algorithm by algorithm:
+
+✔ DP Edit Distance → full gap-aware accuracy  
+✔ Myers Bit-vector → fastest short-pattern fuzzy search  
+✔ FFT Convolution (JS) → browser-scale pattern scanning  
+✔ FFT WASM → native-level mismatch search  
+✔ q-gram / LSH → TB-scale approximate indexing  
+✔ Seed-and-Extend → BLAST-style heuristics  
+✔ Wu–Manber → skip-based large-text matching  
+✔ FM-index / Suffix Array → genome-level ultra-fast search  
+
+Together, these models form a **miniature version of a real genomics pipeline**:
+index → seed → filter → align → verify.
+
+This project shows how modern DNA search engines are built —  
+from raw bit-operations to FFT convolution to compressed suffix indexes.
+
+Not just a matcher.  
+A complete **bioinformatics architecture**, recreated algorithm-by-algorithm, fully open-source.
+
+Perfect for:
+• genomic research  
+• alignment engines  
+• mutation scanning  
+• virus detection  
+• coursework + teaching tools  
+• high-performance computing demos  
+• future AI + genomics integrations  
+
+This is not a toy project.  
+This is the **foundation for future DNA search systems**.
 
 ---
 
