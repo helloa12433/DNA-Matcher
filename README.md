@@ -1,4 +1,5 @@
-# 🧬 DNA Approximate Matching Suite  
+# 🧬 High-Performance-DNA-Search-Engine
+
 ### Hybrid FFT + Bit-Vector + Seed-Based + Index-Based DNA Matchers  
 🚀 Ultra-optimized search engines for mismatches, edits, and local alignment  
 This repository is a **full-scale bioinformatics search engine**, built from the
